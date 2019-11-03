@@ -4,12 +4,32 @@ AXE_FX_NAME = "Axe-Fx III MIDI Out"
 
 -- Message types:
 CC_MESSAGE = 176
+PC_MESSAGE = 192
+
+-- Reserved CC values:
+CC_PRESET_INCREMENT = 8
+CC_PRESET_DECREMENT = 9
+CC_SCENE_INCREMENT = 10
+CC_SCENE_DECREMENT = 11
+CC_SCENE_SELECT = 12
+CC_TUNER = 13
 
 -- The commands we want to run:
 COMMANDS = {
-    ["SceneIncrement"] = function() SendCC(10) end,
-    ["SceneDecrement"] = function() SendCC(11) end,
+    ["AxeOff"] = function() SendPC(0, 0) end,
+    ["AxePresetDecrement"] = function() SendCC(CC_PRESET_DECREMENT) end,
+    ["AxePresetIncrement"] = function() SendCC(CC_PRESET_INCREMENT) end,
+    ["AxeScene1"] = function() SelectScene(0) end,
+    ["AxeScene2"] = function() SelectScene(1) end,
+    ["AxeScene3"] = function() SelectScene(2) end,
+    ["AxeScene4"] = function() SelectScene(3) end,
+    ["AxeScene5"] = function() SelectScene(4) end,
+    ["AxeSceneDecrement"] = function() SendCC(CC_SCENE_DECREMENT) end,
+    ["AxeSceneIncrement"] = function() SendCC(CC_SCENE_INCREMENT) end,
+    ["AxeTunerOn"] = function() SendCC(CC_TUNER, 125) end,
+    ["AxeTunerOff"] = function() SendCC(CC_TUNER, 0) end,
 }
+
 function FindAxe()
     outputs = reaper.GetNumMIDIOutputs()
     for i = 0, outputs do
@@ -38,9 +58,21 @@ function SendCC(cc, val)
     end
 end
 
+function SendPC(pc, val)
+    val = val or 0
+    found, device = FindAxe()
+    if found then
+        SendMessage(device, PC_MESSAGE, CHANNEL, pc, val)
+    end
+end
+
+function SelectScene(scene)
+    SendCC(CC_SCENE_SELECT, scene)
+end
+
 function get_file_name(source)
     name = source:match("[^\\]*.lua$"):match("(.*).lua")
-    reaper.ShowConsoleMsg(name .. "\n")
+    --reaper.ShowConsoleMsg(name .. "\n")
     return name
 end
 
