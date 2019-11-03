@@ -26,8 +26,7 @@ COMMANDS = {
     ["AxeScene5"] = function() SelectScene(4) end,
     ["AxeSceneDecrement"] = function() SendCC(CC_SCENE_DECREMENT) end,
     ["AxeSceneIncrement"] = function() SendCC(CC_SCENE_INCREMENT) end,
-    ["AxeTunerOn"] = function() SendCC(CC_TUNER, 125) end,
-    ["AxeTunerOff"] = function() SendCC(CC_TUNER, 0) end,
+    ["AxeTunerToggle"] = function() ToggleCC(CC_TUNER) end,
 }
 
 function FindAxe()
@@ -52,6 +51,20 @@ end
 
 function SendCC(cc, val)
     val = val or 0
+    found, device = FindAxe()
+    if found then
+        SendMessage(device, CC_MESSAGE, CHANNEL, cc, val)
+    end
+end
+
+function ToggleCC(cc)
+    val = 125
+    if reaper.HasExtState("Axe_CC", tostring(cc)) then
+        val = 0
+        reaper.DeleteExtState("Axe_CC", tostring(cc), true)
+    else
+        reaper.SetExtState("Axe_CC", tostring(cc), "125", false)
+    end
     found, device = FindAxe()
     if found then
         SendMessage(device, CC_MESSAGE, CHANNEL, cc, val)
