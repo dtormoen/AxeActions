@@ -1,3 +1,3 @@
-require('Scripts.Axe.AxeMain')
+require('Scripts.AxeActions.AxeMain')
 
-HandleAction(get_file_name(debug.getinfo(1,'S').source))
+HandleAction(GetFileName(debug.getinfo(1,'S').source))

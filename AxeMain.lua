@@ -6,7 +6,7 @@ AXE_FX_NAME = "Axe-Fx III MIDI Out"
 CC_MESSAGE = 176
 PC_MESSAGE = 192
 
--- Reserved CC values:
+-- Reserved CC values. Set the CC value for these actions in the Axe FX unit to these values.
 CC_PRESET_INCREMENT = 8
 CC_PRESET_DECREMENT = 9
 CC_SCENE_INCREMENT = 10
@@ -16,6 +16,7 @@ CC_TUNER = 13
 
 -- The commands we want to run:
 COMMANDS = {
+    -- I have PReset 0 set up to have no in, out, or effects.
     ["AxeOff"] = function() SendPC(0, 0) end,
     ["AxePresetDecrement"] = function() SendCC(CC_PRESET_DECREMENT) end,
     ["AxePresetIncrement"] = function() SendCC(CC_PRESET_INCREMENT) end,
@@ -24,6 +25,9 @@ COMMANDS = {
     ["AxeScene3"] = function() SelectScene(2) end,
     ["AxeScene4"] = function() SelectScene(3) end,
     ["AxeScene5"] = function() SelectScene(4) end,
+    ["AxeScene6"] = function() SelectScene(5) end,
+    ["AxeScene7"] = function() SelectScene(6) end,
+    ["AxeScene8"] = function() SelectScene(7) end,
     ["AxeSceneDecrement"] = function() SendCC(CC_SCENE_DECREMENT) end,
     ["AxeSceneIncrement"] = function() SendCC(CC_SCENE_INCREMENT) end,
     ["AxeTunerToggle"] = function() ToggleCC(CC_TUNER) end,
@@ -82,8 +86,8 @@ function SelectScene(scene)
     SendCC(CC_SCENE_SELECT, scene)
 end
 
-function get_file_name(source)
-    name = source:match("[^\\]*.lua$"):match("(.*).lua")
+function GetFileName(source)
+    name = source:match("[^\\/]*.lua$"):match("(.*).lua")
     return name
 end
 
