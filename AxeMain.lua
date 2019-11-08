@@ -45,7 +45,6 @@ end
 function SendMessage(device, type, channel, b2, b3)
     b2 = b2 or 0
     b3 = b3 or 0
-    --reaper.ShowConsoleMsg("Sending: " .. tostring(CC_MESSAGE + CHANNEL) .. " " .. tostring(CC) .. " " .. tostring(CC_VALUE) .. "\n")
     reaper.StuffMIDIMessage(16 + device, type + channel, b2, b3)
 end
 
@@ -85,7 +84,6 @@ end
 
 function get_file_name(source)
     name = source:match("[^\\]*.lua$"):match("(.*).lua")
-    --reaper.ShowConsoleMsg(name .. "\n")
     return name
 end
 
